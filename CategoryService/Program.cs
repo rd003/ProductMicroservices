@@ -1,3 +1,6 @@
+using CategoryService.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +9,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<CategoryContext>(o => o.UseInMemoryDatabase("CategoryService"));
 
 var app = builder.Build();
 
@@ -21,5 +26,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// default route
+app.MapGet("/", () => "ControllerServices is working");
+
+// seeding data
+await DbSeeder.SeedData(app);
 
 app.Run();
