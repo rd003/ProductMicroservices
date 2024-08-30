@@ -29,6 +29,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.UseMiddleware<ExceptionMiddleware>();
+
 app.MapControllers();
+
+DbSeeder.Seed(app);
 
 app.Run();
