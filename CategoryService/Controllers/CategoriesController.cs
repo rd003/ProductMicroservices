@@ -1,4 +1,6 @@
+using CategoryService.AsyncDataServices;
 using CategoryService.Data;
+using CategoryService.Extensions;
 using CategoryService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +12,12 @@ namespace CategoryService.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly CategoryContext context;
+        private readonly IMessageBusClient _messageBusClient;
 
-        public CategoriesController(CategoryContext categoryContext)
+        public CategoriesController(CategoryContext categoryContext, IMessageBusClient messageBusClient)
         {
             context = categoryContext;
+            _messageBusClient = messageBusClient;
         }
 
         // GET: api/Categories
@@ -54,20 +58,36 @@ namespace CategoryService.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategory(Category category)
         {
+            if (category == null)
+            {
+                return BadRequest();
+            }
+
+            // Add Category
             try
             {
-                if (category == null)
-                {
-                    return BadRequest();
-                }
                 context.Categories.Add(category);
                 await context.SaveChangesAsync();
-                return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
+
+            // Send Async Message
+            try
+            {
+                var categoryPublishedDTO = category.ToCategoryPubhlishedDTO();
+                var categoryPublishedDTOWithEvent = categoryPublishedDTO with { Event = "Category_Published" };
+                _messageBusClient.PublishNewCategory(categoryPublishedDTOWithEvent);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"--> Could not send asynchronously: {ex.Message}");
+            }
+
+            return CreatedAtAction(nameof(GetCategoryById), new { id = category.Id }, category);
+
         }
 
         // PUT: api/Categories/5

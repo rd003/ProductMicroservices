@@ -1,3 +1,4 @@
+using CategoryService.AsyncDataServices;
 using CategoryService.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,6 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
 
 builder.Services.AddDbContext<CategoryContext>(o => o.UseInMemoryDatabase("CategoryService"));
 
