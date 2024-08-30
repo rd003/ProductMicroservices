@@ -44,11 +44,25 @@ public static class Extension
         };
     }
 
-    // // convert Category to CategoryPublishDTO
-
-    public static CategoryPublishDTO ToProductReadDTO(this Category category)
+    public static CategoryReadDTO ToCategoryReadDTO(this Category category)
     {
-        return new CategoryPublishDTO
+        return new CategoryReadDTO
+        {
+            Id = category.Id,
+            Name = category.Name
+        };
+    }
+
+    public static List<CategoryReadDTO> ToCategoryReadDTOList(this List<Category> category)
+    {
+        return category.Select(c => c.ToCategoryReadDTO()).ToList();
+    }
+
+    // category publish dto to category
+
+    public static Category ToCategory(this CategoryPublishedDTO category)
+    {
+        return new Category
         {
             Id = category.Id,
             Name = category.Name

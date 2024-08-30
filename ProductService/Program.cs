@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using ProductService.AsyncDataServices;
 using ProductService.Data;
+using ProductService.EventProcessing;
 using ProductService.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ProductContext>(opt => opt.UseInMemoryDatabase("ProductList"));
 
 builder.Services.AddTransient<ExceptionMiddleware>();
+
+builder.Services.AddHostedService<MessageBusSubscriber>();
+builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
 
 var app = builder.Build();
 

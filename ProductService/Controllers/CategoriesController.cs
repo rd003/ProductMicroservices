@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProductService.Data;
 using ProductService.DTOS;
+using ProductService.Extensions;
 
 namespace ProductService.Controllers
 {
@@ -20,11 +21,7 @@ namespace ProductService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            IEnumerable<CategoryPublishDTO> categories = await _context.Categories.Select(a => new CategoryPublishDTO
-            {
-                Id = a.Id,
-                Name = a.Name
-            }).ToListAsync();
+            IEnumerable<CategoryReadDTO> categories = (await _context.Categories.AsNoTracking().ToListAsync()).ToCategoryReadDTOList();
             return Ok(categories);
         }
     }
