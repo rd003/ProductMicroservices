@@ -16,7 +16,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ProductContext>(opt => opt.UseInMemoryDatabase("ProductList"));
 
 builder.Services.AddTransient<ExceptionMiddleware>();
-
 builder.Services.AddHostedService<MessageBusSubscriber>();
 builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
 

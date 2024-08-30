@@ -15,11 +15,9 @@ public class MessageBusSubscriber : BackgroundService
     private string _queueName;
     public IEventProcessor _eventProcessor;
 
-    public MessageBusSubscriber(IEventProcessor eventProcessor, IConfiguration configuration, IConnection connection, IModel channel)
+    public MessageBusSubscriber(IEventProcessor eventProcessor, IConfiguration configuration)
     {
         _configuration = configuration;
-        _connection = connection;
-        _channel = channel;
         _eventProcessor = eventProcessor;
         InitializeRabbitMQ();
     }
@@ -50,7 +48,7 @@ public class MessageBusSubscriber : BackgroundService
 
     public override void Dispose()
     {
-        if (_connection.IsOpen)
+        if (_channel.IsOpen)
         {
             _channel.Close();
             _connection.Close();
