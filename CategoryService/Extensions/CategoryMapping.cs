@@ -10,4 +10,13 @@ public static class CategoryMapping
     {
         return new CategoryPublishedDTO(category.Id, category.Name, "");
     }
+
+    public static GrpcCategoryModel ToGrpcCategoryModel(this Category category)
+    {
+        return new GrpcCategoryModel
+        {
+            CategoryId = category.Id,
+            Name = category.Name,
+        };
+    }
 }
