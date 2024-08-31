@@ -1,5 +1,6 @@
 using CategoryService.AsyncDataServices;
 using CategoryService.Data;
+using CategoryService.SyncDataServices.Grpc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
+builder.Services.AddGrpc();
 
 builder.Services.AddDbContext<CategoryContext>(o => o.UseInMemoryDatabase("CategoryService"));
 
@@ -29,6 +31,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGrpcService<GrpcCategoryService>();
+
+app.MapGet("/protos/categories.proto", async context =>
+                {
+                    await context.Response.WriteAsync(File.ReadAllText("Protos/categories.proto"));
+                });
 
 // default route
 app.MapGet("/", () => "ControllerServices is working");
