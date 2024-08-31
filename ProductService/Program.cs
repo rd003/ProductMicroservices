@@ -3,6 +3,7 @@ using ProductService.AsyncDataServices;
 using ProductService.Data;
 using ProductService.EventProcessing;
 using ProductService.Middlewares;
+using ProductService.SyncService.Grpc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddDbContext<ProductContext>(opt => opt.UseInMemoryDatabase("Pr
 builder.Services.AddTransient<ExceptionMiddleware>();
 builder.Services.AddHostedService<MessageBusSubscriber>();
 builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
+builder.Services.AddScoped<ICategoryDataClient, CategoryDataClient>();
 
 var app = builder.Build();
 
@@ -36,6 +38,6 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 
-DbSeeder.Seed(app);
+await DbSeeder.Seed(app);
 
 app.Run();

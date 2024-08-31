@@ -1,3 +1,4 @@
+using CategoryService;
 using ProductService.DTOS;
 using ProductService.Models;
 
@@ -65,6 +66,15 @@ public static class Extension
         return new Category
         {
             Id = category.Id,
+            Name = category.Name
+        };
+    }
+
+    public static Category ToCategory(this GrpcCategoryModel category)
+    {
+        return new Category
+        {
+            Id = category.CategoryId,
             Name = category.Name
         };
     }
