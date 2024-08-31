@@ -15,3 +15,17 @@ spec:
       containers:
         - name: productservice
           image: ravindradevrani003/productservice:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: products-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: productservice
+  ports:
+    - name: productservice
+      protocol: TCP
+      port: 80
+      targetPort: 8080
