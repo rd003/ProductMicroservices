@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apigateway-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apigatewayservice
+  template:
+    metadata:
+      labels:
+        app: apigatewayservice
+    spec:
+      containers:
+        - name: api-gateway-service
+          image: ravindradevrani003/apigateway:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: apigatewayservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
