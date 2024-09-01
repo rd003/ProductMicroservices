@@ -1,3 +1,5 @@
+using ApiGateway.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -8,6 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 if (builder.Environment.IsDevelopment())
 {
@@ -21,7 +25,6 @@ else
     builder.Configuration.AddJsonFile("ocelot.production.json", optional: false, reloadOnChange: true);
 }
 
-
 builder.Services.AddOcelot(builder.Configuration);
 
 var app = builder.Build();
@@ -34,6 +37,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

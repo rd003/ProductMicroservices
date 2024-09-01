@@ -10,7 +10,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/categories",
-      "UpstreamHttpMethod": ["Get"]
+      "UpstreamHttpMethod": ["Get"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/categories/{id}",
@@ -22,7 +25,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/categories/{id}",
-      "UpstreamHttpMethod": ["Get", "Delete"]
+      "UpstreamHttpMethod": ["Get", "Delete"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/categories",
@@ -34,7 +40,13 @@
         }
       ],
       "UpstreamPathTemplate": "/api/categories",
-      "UpstreamHttpMethod": ["Post"]
+      "UpstreamHttpMethod": ["Post"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "role": "Administrator"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/categories/{id}",
@@ -46,7 +58,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/categories/{id}",
-      "UpstreamHttpMethod": ["Put"]
+      "UpstreamHttpMethod": ["Put"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/c/categories",
@@ -58,7 +73,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/c/categories",
-      "UpstreamHttpMethod": ["Get"]
+      "UpstreamHttpMethod": ["Get"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/c/categories/{categoryId}/products",
@@ -70,7 +88,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/c/categories/{categoryId}/products",
-      "UpstreamHttpMethod": ["Get"]
+      "UpstreamHttpMethod": ["Get"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/c/categories/{categoryId}/products",
@@ -82,7 +103,10 @@
         }
       ],
       "UpstreamPathTemplate": "/api/c/categories/{categoryId}/products",
-      "UpstreamHttpMethod": ["Post"]
+      "UpstreamHttpMethod": ["Post"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
     },
     {
       "DownstreamPathTemplate": "/api/c/categories/{categoryId}/products/{productId}",
@@ -94,7 +118,22 @@
         }
       ],
       "UpstreamPathTemplate": "/api/c/categories/{categoryId}/products/{productId}",
-      "UpstreamHttpMethod": ["Put", "Get", "Delete"]
+      "UpstreamHttpMethod": ["Put", "Get", "Delete"],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/auth/login",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "auths-clusterip-srv",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/auth/login",
+      "UpstreamHttpMethod": ["Post"]
     }
   ],
   "GlobalConfiguration": {
